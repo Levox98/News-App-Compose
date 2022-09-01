@@ -9,7 +9,6 @@ class Constants {
     companion object {
         val BASE_URL = "https://newsapi.org"
         val API_KEY = "d44b65951a5642dd9d9b699384536d16"
-        val FROM = "${ LocalDate.now() }"
-        val TO = "${ LocalDate.now().minusDays(30)}"
+        val FROM = "${ LocalDate.now().minusDays(30) }"
     }
 }

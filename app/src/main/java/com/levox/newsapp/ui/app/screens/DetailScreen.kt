@@ -17,7 +17,7 @@ import com.levox.newsapp.ui.theme.NewsAppComposeTheme
 import com.levox.newsapp.utils.Constants
 
 @Composable
-fun ArticleScreen(
+fun DetailScreen(
     article: Article? = null
 ) {
     Column(
@@ -50,7 +50,7 @@ fun ArticleScreen(
                         fontStyle = FontStyle.Italic
                     )
                     Text(
-                        text = article?.title!!,
+                        text = article?.title ?: "",
                         fontWeight = FontWeight.Bold,
                     )
                 }
@@ -60,7 +60,7 @@ fun ArticleScreen(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = article?.content!!,
+                    text = article?.content ?: "No content",
                     modifier = Modifier
                         .padding(5.dp)
                 )
@@ -73,12 +73,12 @@ fun ArticleScreen(
 @Composable
 fun ArticleScreenPreview() {
     NewsAppComposeTheme {
-        ArticleScreen(
+        DetailScreen(
             Article(
                 author = "John Doe", title = "Test Article", content = "This is a " +
                         "test article to test the tested functionality.",
                 description = "This is a test description to test the description.",
-                publishedAt = Constants.TO, source = Source("1", "Me"), url = "",
+                publishedAt = Constants.FROM, source = Source("1", "Me"), url = "",
                 urlToImage = "https://media.wired.com/photos/62e9c5e1d7368105da057de3/191:100/w_1280,c_limit/BitRiver-Mining-Center-Rise-And-Fall-Of-Bitcoin-Mining-Business-1184520941.jpg"
             )
         )
