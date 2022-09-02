@@ -49,9 +49,6 @@ fun MainScreen(
         }
     }
 
-    if (state.isLoading) {
-        LoadingScreen()
-    }
 
     if (state.searchedNews.isNotEmpty()) {
         resultList.clear()
@@ -70,12 +67,16 @@ fun MainScreen(
             onSearchClicked = { viewModel.onSearchClicked(it) },
             backgroundColor = queryColor
         )
-        LazyColumn {
-            items(count = resultList.size) { index ->
-                ArticleItem(
-                    article = resultList[index],
-                    navController = navController
-                )
+        if (state.isLoading) {
+            LoadingScreen()
+        } else {
+            LazyColumn {
+                items(count = resultList.size) { index ->
+                    ArticleItem(
+                        article = resultList[index],
+                        navController = navController
+                    )
+                }
             }
         }
     }
