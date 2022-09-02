@@ -24,8 +24,6 @@ class NewsViewModel : ViewModel() {
 
     private val _articles = MutableLiveData<List<Article>>()
 
-    private val _selectedArticle: MutableStateFlow<Article?> = MutableStateFlow(null)
-
     val searchQuery: MutableState<String> = mutableStateOf("")
 
     private fun searchNews(searchQuery: String) {
