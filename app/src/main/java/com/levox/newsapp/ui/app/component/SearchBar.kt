@@ -1,7 +1,7 @@
 package com.levox.newsapp.ui.app.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,7 +28,8 @@ fun SearchBar(
     text: String,
     onTextChange: (String) -> Unit,
     onCloseClicked: () -> Unit,
-    onSearchClicked: (String) -> Unit
+    onSearchClicked: (String) -> Unit,
+    backgroundColor: Color
 ) {
     val localFocusManager = LocalFocusManager.current
     Card(
@@ -46,10 +46,11 @@ fun SearchBar(
                 onTextChange(it)
             },
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .background(backgroundColor),
             placeholder = {
                 Text(
-                    text = "Введите тему для просмотра новостей",
+                    text = "Введите запрос...",
                     color = Color.White,
                     modifier = Modifier
                         .alpha(ContentAlpha.medium)
@@ -89,14 +90,15 @@ fun SearchBar(
                     }
                 ),
                 colors = TextFieldDefaults.textFieldColors(textColor = Color.White)
-                )
+            )
         }
     }
 
 @Preview(showBackground = true)
 @Composable
 fun SearchBarPreview() {
-    NewsAppComposeTheme() {
-        SearchBar(text = "", onTextChange = { }, onCloseClicked = { }, onSearchClicked = { })
+    NewsAppComposeTheme {
+        SearchBar(text = "", onTextChange = { }, onCloseClicked = { }, onSearchClicked = { }, Color.Transparent)
     }
 }
+

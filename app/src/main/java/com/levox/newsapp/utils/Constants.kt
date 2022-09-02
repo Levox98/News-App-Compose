@@ -1,14 +1,15 @@
 package com.levox.newsapp.utils
 
-import com.google.gson.internal.bind.util.ISO8601Utils.format
 import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
 
 class Constants {
     companion object {
-        val BASE_URL = "https://newsapi.org"
-        val API_KEY = "d44b65951a5642dd9d9b699384536d16"
-        val FROM = "${ LocalDate.now().minusDays(30) }"
+        const val BASE_URL = "https://newsapi.org"
+        const val API_KEY = "d44b65951a5642dd9d9b699384536d16"
+        val FROM = "${LocalDate.now().minusDays(30)}"
+
+        const val MAIN_SCREEN = "main_screen"
+        const val DETAIL_SCREEN = "detail_screen"
+        const val ARTICLE = "article"
     }
 }

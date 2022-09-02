@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
-enum class NewsApiStatus { LOADING, ERROR, DONE }
+private const val MIN_LENGTH = 3
+private const val MAX_LENGTH = 50
 
 class NewsViewModel : ViewModel() {
 
@@ -23,39 +23,58 @@ class NewsViewModel : ViewModel() {
     val state: StateFlow<NewsUiState>
         get() = _state.asStateFlow()
 
-
     private val _articles = MutableLiveData<List<Article>>()
-    val articles: LiveData<List<Article>>
-        get() = _articles
 
     private val _selectedArticle: MutableStateFlow<Article?> = MutableStateFlow(null)
-    val selectedArticle: StateFlow<Article?> = _selectedArticle.asStateFlow()
 
     val searchQuery: MutableState<String> = mutableStateOf("")
 
-    fun searchNews(searchQuery: String) {
-
+    private fun searchNews(searchQuery: String) {
         viewModelScope.launch {
+            _articles.value = emptyList()
             _state.update { currentState -> currentState.copy(isLoading = true) }
             try {
-                _articles.value = NewsApi.retrofitService.searchNews(searchQuery = searchQuery).articles
+                _articles.value =
+                    NewsApi.retrofitService.searchNews(searchQuery = searchQuery).articles
                 _state.update { currentState ->
                     currentState.copy(
                         isLoading = false,
-                        searchedNews = _articles.value ?: emptyList())
+                        searchedNews = _articles.value ?: emptyList()
+                    )
                 }
             } catch (e: Exception) {
-                _state.update { currentState -> currentState.copy(error = e) }
+                _state.update { currentState ->
+                    currentState.copy(
+                        isLoading = false,
+                        error = e,
+                        searchedNews = emptyList()
+                    )
+                }
             }
         }
     }
 
     fun updateQuery(query: String) {
+        if (query.isEmpty()) {
+            _state.update { currentState -> currentState.copy(queryValid = true) }
+        }
         searchQuery.value = query
     }
 
     fun clearSearch() {
-        _state.update { currentState -> currentState.copy(searchedNews = emptyList()) }
+        _state.update { currentState ->
+            currentState.copy(searchedNews = emptyList(), queryValid = true)
+        }
+    }
+
+    fun onSearchClicked(query: String) {
+        _state.update { currentState -> currentState.copy(queryValid = checkQueryValid(query)) }
+        if (!_state.value.queryValid) return
+        searchNews(query)
+    }
+
+    private fun checkQueryValid(query: String): Boolean {
+        return query.length in MIN_LENGTH..MAX_LENGTH
     }
 }
 
@@ -63,4 +82,5 @@ data class NewsUiState(
     val isLoading: Boolean = false,
     val error: Exception? = null,
     val searchedNews: List<Article> = emptyList(),
+    val queryValid: Boolean = true
 )

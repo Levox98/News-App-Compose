@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.levox.newsapp.R
@@ -19,15 +18,14 @@ import com.levox.newsapp.ui.theme.NewsAppComposeTheme
 fun LoadingScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .testTag("LoadingView"),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressIndicator()
         Text(
             text = stringResource(id = R.string.loading),
-            fontSize = MaterialTheme.typography.h5.fontSize
+            fontSize = MaterialTheme.typography.h3.fontSize
         )
     }
 }
